@@ -1,88 +1,193 @@
+// ===============================
+// LANDING
+// ===============================
+
+const landing = document.getElementById("landing");
+const app = document.getElementById("app");
+
+landing.addEventListener("click", () => {
+
+  landing.style.opacity = "0";
+
+  setTimeout(() => {
+
+    landing.style.display = "none";
+    app.style.display = "flex";
+
+  }, 500);
+
+});
+
+// ===============================
+// ELEMENTOS
+// ===============================
+
 const input = document.getElementById("searchInput");
 const btn = document.getElementById("btnSearch");
 const resultados = document.getElementById("resultados");
 
-// ---- FUNCIÓN PARA BUSCAR EN SPOTIFY ----
+// ===============================
+// BUSCAR CANCIONES
+// ===============================
+
 async function buscarCanciones() {
+
   const q = input.value.trim();
+
   if (!q) return;
 
-  resultados.innerHTML = `<p class="text-gray-400 text-sm">Buscando...</p>`;
+  resultados.innerHTML = `
+    <p style="color:#888;">
+      Buscando...
+    </p>
+  `;
 
   try {
-    const resp = await fetch(`https://otro-tema-free.onrender.com/api/search?q=${encodeURIComponent(q)}`);
+
+    const resp = await fetch(
+      `https://otro-tema-free.onrender.com/api/search?q=${encodeURIComponent(q)}`
+    );
+
     const data = await resp.json();
 
     if (!resp.ok) {
-      resultados.innerHTML = `<p class="text-red-400 text-sm">Error al buscar canciones.</p>`;
+
+      resultados.innerHTML = `
+        <p style="color:#ff5555;">
+          Error al buscar canciones.
+        </p>
+      `;
+
       return;
     }
 
     mostrarResultados(data);
+
   } catch (err) {
-    resultados.innerHTML = `<p class="text-red-400 text-sm">Error de conexión.</p>`;
+
+    resultados.innerHTML = `
+      <p style="color:#ff5555;">
+        Error de conexión.
+      </p>
+    `;
   }
 }
 
-// ---- MOSTRAR CANCIONES ----
+// ===============================
+// MOSTRAR RESULTADOS
+// ===============================
+
 function mostrarResultados(tracks) {
+
   resultados.innerHTML = "";
 
   if (!tracks.length) {
-    resultados.innerHTML = `<p class="text-gray-400 text-sm">No se encontraron canciones.</p>`;
+
+    resultados.innerHTML = `
+      <p style="color:#888;">
+        No se encontraron canciones.
+      </p>
+    `;
+
     return;
   }
 
   tracks.forEach(track => {
+
     const div = document.createElement("div");
 
-    div.className = "bg-gray-700 p-3 rounded flex items-center gap-3 hover:bg-gray-600 cursor-pointer";
+    div.className = "track";
 
     div.innerHTML = `
-      <img src="${track.album.images?.[2]?.url || track.album.images?.[0]?.url || ""}" 
-           class="w-12 h-12 rounded" />
 
-      <div class="flex-1">
-        <p class="font-semibold">${track.name}</p>
-        <p class="text-gray-300 text-sm">${track.artists[0].name}</p>
+      <img
+        src="${
+          track.album.images?.[2]?.url ||
+          track.album.images?.[0]?.url ||
+          ""
+        }"
+        alt=""
+      >
+
+      <div class="track-info">
+
+        <div class="track-name">
+          ${track.name}
+        </div>
+
+        <div class="track-artist">
+          ${track.artists[0].name}
+        </div>
+
       </div>
 
-      <button class="px-3 py-1 bg-green-600 rounded hover:bg-green-500 text-sm">
+      <button>
         Agregar
       </button>
+
     `;
 
-    // EVENTO DE "AGREGAR A LA COLA"
     div.querySelector("button").addEventListener("click", () => {
       agregarTema(track.uri);
     });
 
     resultados.appendChild(div);
+
   });
+
 }
 
-// ---- AGREGAR TEMA A LA COLA ----
+// ===============================
+// AGREGAR A LA COLA
+// ===============================
+
 async function agregarTema(uri) {
-  const resp = await fetch("https://otro-tema-free.onrender.com/api/add", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ trackUri: uri })
-  });
 
-  const data = await resp.json();
+  try {
 
-  if (resp.ok) {
-    alert("Tema agregado a la cola 🎵");
-  } else {
-    alert("Error al agregar tema: " + data.error);
+    const resp = await fetch(
+      "https://otro-tema-free.onrender.com/api/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          trackUri: uri
+        })
+      }
+    );
+
+    const data = await resp.json();
+
+    if (resp.ok) {
+
+      alert("🎵 Tema agregado a la cola");
+
+    } else {
+
+      alert("Error: " + data.error);
+
+    }
+
+  } catch (error) {
+
+    alert("Error de conexión");
+
   }
+
 }
 
-// ---- EVENTO DE BUSCAR ----
+// ===============================
+// EVENTOS
+// ===============================
+
 btn.addEventListener("click", buscarCanciones);
 
 input.addEventListener("keypress", e => {
-  if (e.key === "Enter") buscarCanciones();
+
+  if (e.key === "Enter") {
+    buscarCanciones();
+  }
+
 });
