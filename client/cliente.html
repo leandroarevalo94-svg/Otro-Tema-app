@@ -1,38 +1,84 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Otro Tema — Pedí tu canción</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Tailwind CDN (rápido para prototipo) -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Otro-Tema.app</title>
+
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex items-start justify-center p-4">
+<body>
 
-  <main class="w-full max-w-md">
-    <header class="mb-6 text-center">
-      <h1 class="text-3xl font-bold">🎵 OTRO TEMA 🎵</h1>
-      <p class="text-sm text-gray-300">Escaneaste el QR de: <strong id="bar-name">⚓BARLOVENTO⚓</strong></p>
-    </header>
+  <!-- LANDING -->
 
-    <section class="bg-gray-800 rounded-lg p-4 shadow">
-      <label class="block text-sm text-gray-300 mb-2">Buscar canción</label>
+  <section id="landing">
 
-      <div class="flex gap-2">
-        <input id="searchInput" type="text" placeholder="Ej: Los Pibes Chorros — Sentimiento Villero"
-               class="flex-1 p-2 rounded bg-gray-700 text-white outline-none" />
-        <button id="btnSearch" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-500">Buscar</button>
-      </div>
+    <h1 class="logo">
+      <span class="logo-white">Otro-Tema</span><span class="logo-green">.app</span>
+    </h1>
 
-      <div id="resultados" class="mt-4 space-y-2"></div>
-    </section>
+    <p class="subtitle">
+      Pedí tu canción
+    </p>
 
-    <section class="mt-4 text-center text-sm text-gray-400">
-      <div id="msg-info"><strong>Pedí tu tema🍺</strong>.</div>
-    </section>
+    <p class="click-text">
+      Tocá cualquier lugar para continuar
+    </p>
+
+  </section>
+
+  <!-- APP -->
+
+  <main id="app">
+
+    <div class="container">
+
+      <header class="header">
+
+        <h2>
+          <span class="logo-white">Otro-Tema</span><span class="logo-green">.app</span>
+        </h2>
+
+        <p>
+          Escaneaste el QR de
+        </p>
+
+        <p id="bar-name" class="bar-name">
+          ⚓ BARLOVENTO ⚓
+        </p>
+
+      </header>
+
+      <section class="search-card">
+
+        <label class="search-label">
+          Buscar canción
+        </label>
+
+        <div class="search-row">
+
+          <input
+            id="searchInput"
+            type="text"
+            placeholder="Nombre de canción o artista..."
+          >
+
+          <button id="btnSearch">
+            Buscar
+          </button>
+
+        </div>
+
+        <div id="resultados"></div>
+
+      </section>
+
+    </div>
+
   </main>
 
   <script src="cliente.js"></script>
+
 </body>
 </html>
