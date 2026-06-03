@@ -127,30 +127,35 @@ async function ensureAuth(req, res, next) {
 // BUSCAR TEMAS
 // ===============================
 app.get("/api/search", ensureAuth, async (req, res) => {
-  const q = req.query.q;
-  if (!q) return res.json([]);
+  try {
+    const q = req.query.q;
+    if (!q) return res.json([]);
 
-  let response = await fetch(
-    `https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=10`,
-    {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    }
-  );
+    console.log("TOKEN:", accessToken ? "EXISTE" : "NULL");
 
-  // Si expira token → refrescar
-  if (response.status === 401) {
-    await refreshAccessToken();
-
-    response = await fetch(
+    let response = await fetch(
       `https://api.spotify.com/v1/search?q=${encodeURIComponent(q)}&type=track&limit=10`,
       {
-        headers: { Authorization: `Bearer ${accessToken}` }
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
       }
     );
-  }
 
-  const data = await response.json();
-  res.json(data.tracks.items || []);
+    console.log("STATUS:", response.status);
+
+    const text = await response.text();
+
+    console.log("BODY:", text);
+
+    res.send(text);
+
+  } catch (err) {
+    console.error("ERROR SEARCH:", err);
+    res.status(500).json({
+      error: err.message
+    });
+  }
 });
 
 // ===============================
