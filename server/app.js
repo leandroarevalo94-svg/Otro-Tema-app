@@ -225,6 +225,6 @@ app.post("/api/add", ensureAuth, async (req, res) => {
 // INICIAR SERVIDOR
 // ===============================
 app.listen(PORT, () => {
-  console.log("Servidor corriendo en https://otro-tema-free.onrender.com:" + PORT);
+  console.log("Servidor corriendo en https://otro-tema-app.onrender.com:" + PORT);
 });
 
