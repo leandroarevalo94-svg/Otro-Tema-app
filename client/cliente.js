@@ -45,7 +45,7 @@ async function buscarCanciones() {
   try {
 
     const resp = await fetch(
-      `https://otro-tema-free.onrender.com/api/search?q=${encodeURIComponent(q)}`
+      `https://otro-tema-app.onrender.com/api/search?q=${encodeURIComponent(q)}`
     );
 
     const data = await resp.json();
@@ -146,7 +146,7 @@ async function agregarTema(uri) {
   try {
 
     const resp = await fetch(
-      "https://otro-tema-free.onrender.com/api/add",
+      "https://otro-tema-app.onrender.com/api/add",
       {
         method: "POST",
         headers: {
